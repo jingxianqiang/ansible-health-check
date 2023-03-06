@@ -1,0 +1,43 @@
+---
+
+- name: Check auditd [num_logs] config
+  shell: if [ -n "`grep -w '^num_logs = 4' /etc/audit/auditd.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: auditd_num_logs
+- set_fact:
+    auditd_num_logs: "{{ auditd_num_logs | combine({'expect':'audit config [num_logs = 4]', 'tag':'sed -i  \"s/^num_logs =.*/num_logs\ =\ 4/\" /etc/audit/auditd.conf'})}}"
+
+- name: Check auditd [max_log_file] config
+  shell: if [ -n "`grep -w '^max_log_file = 50' /etc/audit/auditd.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: auditd_max_log_file
+- set_fact:
+    auditd_max_log_file: "{{ auditd_max_log_file | combine({'expect':'audit config [max_log_file = 50]', 'tag':'sed -i  \"s/^max_log_file =.*/max_log_file\ =\ 50/\" /etc/audit/auditd.conf'})}}"
+
+- name: Check auditd [flush] config
+  shell: if [ -n "`grep -w '^flush = NONE' /etc/audit/auditd.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: auditd_flush
+- set_fact:
+    auditd_flush: "{{ auditd_flush | combine({'expect':'audit config [flush = NONE]', 'tag':'sed -i  \"s/^flush =.*/flush\ =\ NONE/\" /etc/audit/auditd.conf'})}}"
+
+- name: Check auditd rules [tmpusr] user config
+  shell: if [ -n "`grep 'tmpusr' /etc/passwd`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: auditd_user_tmpusr
+- set_fact:
+    auditd_user_tmpusr: "{{ auditd_user_tmpusr | combine({'expect':'audit user tmpusr]', 'tag':'Add user tmpusr'})}}"
+
+- name: Check auditd rules [arch=b64] user config
+  shell: if [ -n "`grep '^-a exit,always -F arch=b64 -S execve -k exec' /etc/audit/rules.d/audit.rules`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: auditd_arch_b64
+- set_fact:
+    auditd_arch_b64: "{{ auditd_arch_b64 | combine({'expect':'audit config [-a exit,always -F arch=b64 -S execve -k exec]', 'tag':'echo \"-a exit,always -F arch=b64 -S execve -k exec\" >>/etc/audit/rules.d/audit.rules'})}}"
+
+- name: Check auditd rules [arch=b32] user config
+  shell: if [ -n "`grep '^-a exit,always -F arch=b32 -S execve -k exec' /etc/audit/rules.d/audit.rules`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: auditd_arch_b32
+- set_fact:
+    auditd_arch_b32: "{{ auditd_arch_b32 | combine({'expect':'audit config [-a exit,always -F arch=b32 -S execve -k exec]', 'tag':'echo \"-a exit,always -F arch=b32 -S execve -k exec\" >>/etc/audit/rules.d/audit.rules'})}}"

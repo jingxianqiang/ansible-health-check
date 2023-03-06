@@ -1,0 +1,135 @@
+---
+
+- name: Check file [/etc/passwd] mode
+  shell: if [ `stat -c %a  /etc/passwd` -eq 644 ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: fileMode_passwd
+- set_fact:
+    fileMode_passwd: "{{ fileMode_passwd | combine({'expect':'File mode 644 check', 'tag':'chmod 644 /etc/passwd'})}}"
+
+- name: Check file [/etc/shadow] mode
+  shell: if [ `stat -c %a  /etc/shadow` -eq 600 ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: fileMode_shadow
+- set_fact:
+    fileMode_shadow: "{{ fileMode_shadow | combine({'expect':'File mode 600 check', 'tag':'chmod 600 /etc/shadow'})}}"
+
+- name: Check file [/etc/group] mode
+  shell: if [ `stat -c %a  /etc/group` -eq 644 ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: fileMode_group
+- set_fact:
+    fileMode_group: "{{ fileMode_group | combine({'expect':'File mode 644 check', 'tag':'chmod 644 /etc/group'})}}"
+
+- name: Check file [/etc/gshadow] mode
+  shell: if [ `stat -c %a  /etc/gshadow` -eq 000 ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: fileMode_gshadow
+- set_fact:
+    fileMode_gshadow: "{{ fileMode_gshadow | combine({'expect':'File mode 000 check', 'tag':'chmod 000 /etc/gshadow'})}}"
+
+- name: Check file [/etc/service] mode
+  shell: if [[ `stat -c %a  /etc/service` -eq 644 || ! -f "/etc/service" ]];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: fileMode_service
+- set_fact:
+    fileMode_service: "{{ fileMode_service | combine({'expect':'File mode 644 check', 'tag':'chmod 644 /etc/service'})}}"
+
+- name: Check file [/etc/profile] mode
+  shell: if [ `stat -c %a  /etc/profile` -eq 644 ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: fileMode_profile
+- set_fact:
+    fileMode_profile: "{{ fileMode_profile | combine({'expect':'File mode 644 check', 'tag':'chmod 644 /etc/profile'})}}"
+
+- name: Check file [/etc/inet.conf] mode
+  shell: if [[ `stat -c %a  /etc/inet.conf` -eq 644 || ! -f "/etc/inet.conf" ]];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: fileMode_inet
+- set_fact:
+    fileMode_inet: "{{ fileMode_inet | combine({'expect':'File mode 644 check', 'tag':'chmod 644 /etc/inet.conf'})}}"
+
+- name: Check file [/etc/xinetd.conf] mode
+  shell: if [[ `stat -c %a  /etc/xinetd.conf` -eq 644 || ! -f "/etc/xinetd.conf" ]];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: fileMode_xinetd
+- set_fact:
+    fileMode_xinetd: "{{ fileMode_xinetd | combine({'expect':'File mode 644 check', 'tag':'chmod 644 /etc/xinetd.conf'})}}"
+
+- name: Check file [/etc/crontab] mode
+  shell: if [ `stat -c %a  /etc/crontab` -eq 400 ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: fileMode_crontab
+- set_fact:
+    fileMode_crontab: "{{ fileMode_crontab | combine({'expect':'File mode 400 check', 'tag':'chmod 400 /etc/crontab'})}}"
+
+- name: Check file [/etc/securetty] mode
+  shell: if [ `stat -c %a  /etc/securetty` -eq 400 ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: fileMode_securetty
+- set_fact:
+    fileMode_securetty: "{{ fileMode_securetty | combine({'expect':'File mode 400 check', 'tag':'chmod 400 /etc/securetty'})}}"
+
+- name: Check file [/boot/grub/grub.cfg] mode
+  shell: if [[ `stat -c %a  /boot/grub/grub.cfg` -eq 600 || ! -f "/boot/grub/grub.cfg" ]];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: fileMode_grub
+- set_fact:
+    fileMode_grub: "{{ fileMode_grub | combine({'expect':'File mode 600 check', 'tag':'chmod 600 /boot/grub/grub.cfg'})}}"
+
+- name: Check file [/etc/login.defs] mode
+  shell: if [ `stat -c %a  /etc/login.defs` -eq 600 ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: fileMode_login
+- set_fact:
+    fileMode_login: "{{ fileMode_login | combine({'expect':'File mode 600 check', 'tag':'chmod 600 /etc/login.defs'})}}"
+
+- name: Check file [/etc/hosts.allow] mode                                                                                                                                 
+  shell: if [ `stat -c %a  /etc/hosts.allow` -eq 644 ];then echo 'Passed';else echo 'Failure';fi                                                                           
+  changed_when: False                                                                                                                                                    
+  register: fileMode_hosts_allow
+- set_fact:
+    fileMode_hosts_allow: "{{ fileMode_hosts_allow | combine({'expect':'File mode 644 check', 'tag':'chmod 644 /etc/hosts.allow'})}}"
+
+- name: Check file [/etc/hosts.deny] mode
+  shell: if [ `stat -c %a  /etc/hosts.deny` -eq 644 ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False                                                                                                                                                    
+  register: fileMode_hosts_deny
+- set_fact:
+    fileMode_hosts_deny: "{{ fileMode_hosts_deny | combine({'expect':'File mode 644 check', 'tag':'chmod 644 /etc/hosts.deny'})}}"
+
+- name: Check file [/root/.rhosts] exist
+  shell: if [ ! -f '/root/.rhosts' ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: file_exist_rhosts
+- set_fact:
+    file_exist_rhosts: "{{ file_exist_rhosts | combine({'expect':'File not exist', 'tag':'rm -f /root/.rhosts'})}}"
+
+- name: Check file [/root/.shosts] exist
+  shell: if [ ! -f '/root/.shosts' ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: file_exist_shosts
+- set_fact:
+    file_exist_shosts: "{{ file_exist_shosts | combine({'expect':'File not exist', 'tag':'rm -f /root/.shosts'})}}"
+
+- name: Check file [/etc/hosts.equiv] exist
+  shell: if [ ! -f '/etc/hosts.equiv' ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: file_exist_hosts_equiv
+- set_fact:
+    file_exist_hosts_equiv: "{{ file_exist_hosts_equiv | combine({'expect':'File not exist', 'tag':'rm -f /etc/hosts.equiv'})}}"
+
+- name: Check file [/etc/shosts.equiv] exist
+  shell: if [ ! -f '/etc/shosts.equiv' ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: file_exist_shosts_equiv
+- set_fact:
+    file_exist_shosts_equiv: "{{ file_exist_shosts_equiv | combine({'expect':'File not exist', 'tag':'rm -f /etc/shosts.equiv'})}}"
+
+- name: Check file [/root/.netr] exist
+  shell: if [ ! -f '/root/.netr' ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: file_exist_netr
+- set_fact:
+    file_exist_netr: "{{ file_exist_netr | combine({'expect':'File not exist', 'tag':'rm -f /root/.netr'})}}"
+

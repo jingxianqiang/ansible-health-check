@@ -1,0 +1,204 @@
+---
+
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.all.arp_ignore = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_all_arp_ignore
+- set_fact:
+    network_all_arp_ignore: "{{ network_all_arp_ignore | combine({'expect':'System network setting [net.ipv4.conf.all.arp_ignore = 0]', 'tag':'echo \"net.ipv4.conf.all.arp_ignore = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.default.arp_ignore = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_default_arp_ignore
+- set_fact:
+    network_default_arp_ignore: "{{ network_default_arp_ignore | combine({'expect':'System network setting [net.ipv4.conf.default.arp_ignore = 0]', 'tag':'echo \"net.ipv4.conf.default.arp_ignore = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.all.arp_filter = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_all_arp_filter
+- set_fact:
+    network_all_arp_filter: "{{ network_all_arp_filter | combine({'expect':'System network setting [net.ipv4.conf.all.arp_filter = 0]', 'tag':'echo \"net.ipv4.conf.all.arp_filter = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.default.arp_filter = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_default_arp_filter
+- set_fact:
+    network_default_arp_filter: "{{ network_default_arp_filter | combine({'expect':'System network setting [net.ipv4.conf.default.arp_filter = 0]', 'tag':'echo \"net.ipv4.conf.default.arp_filter = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.all.rp_filter = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_all_rp_filter
+- set_fact:
+    network_all_rp_filter: "{{ network_all_rp_filter | combine({'expect':'System network setting [net.ipv4.conf.all.rp_filter = 0]', 'tag':'echo \"net.ipv4.conf.all.rp_filter = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.all.log_martians =.*0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_all_log_martians
+- set_fact:
+    network_all_log_martians: "{{ network_all_log_martians | combine({'expect':'System network setting [net.ipv4.conf.all.log_martians = 0]', 'tag':'echo \"net.ipv4.conf.all.log_martians = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.default.log_martians = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_default_log_martians
+- set_fact:
+    network_default_log_martians: "{{ network_default_log_martians | combine({'expect':'System network setting [net.ipv4.conf.default.log_martians = 0]', 'tag':'echo \"net.ipv4.conf.default.log_martians = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.all.promote_secondaries = 1' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_all_promote_secondaries
+- set_fact:
+    network_all_promote_secondaries: "{{ network_all_promote_secondaries | combine({'expect':'System network setting [net.ipv4.conf.all.promote_secondaries = 1]', 'tag':'echo \"net.ipv4.conf.all.promote_secondaries = 1\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.ip_no_pmtu_disc = 1' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_ip_no_pmtu_disc
+- set_fact:
+    network_ip_no_pmtu_disc: "{{ network_ip_no_pmtu_disc | combine({'expect':'System network setting [net.ipv4.ip_no_pmtu_disc = 1]', 'tag':'echo \"net.ipv4.ip_no_pmtu_disc = 1\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.all.forwarding = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_all_forwarding
+- set_fact:
+    network_all_forwarding: "{{ network_all_forwarding | combine({'expect':'System network setting [net.ipv4.conf.all.forwarding = 0]', 'tag':'echo \"net.ipv4.conf.all.forwarding = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.default.forwarding = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_default_forwarding
+- set_fact:
+    network_default_forwarding: "{{ network_default_forwarding | combine({'expect':'System network setting [net.ipv4.conf.default.forwarding = 0]', 'tag':'echo \"net.ipv4.conf.default.forwarding = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.icmp_echo_ignore_broadcasts = 1' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_icmp_echo_ignore_broadcasts
+- set_fact:
+    network_icmp_echo_ignore_broadcasts: "{{ network_icmp_echo_ignore_broadcasts | combine({'expect':'System network setting [net.ipv4.icmp_echo_ignore_broadcasts = 1]', 'tag':'echo \"net.ipv4.icmp_echo_ignore_broadcasts = 1\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.all.accept_source_route = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_all_accept_source_route
+- set_fact:
+    network_all_accept_source_route: "{{ network_all_accept_source_route | combine({'expect':'System network setting [net.ipv4.conf.all.accept_source_route = 0]', 'tag':'echo \"net.ipv4.conf.all.accept_source_route = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.default.accept_source_route = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_default_accept_source_route
+- set_fact:
+    network_default_accept_source_route: "{{ network_default_accept_source_route | combine({'expect':'System network setting [net.ipv4.conf.default.accept_source_route = 0]', 'tag':'echo \"net.ipv4.conf.default.accept_source_route = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.all.accept_redirects = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_all_accept_redirects
+- set_fact:
+    network_all_accept_redirects: "{{ network_all_accept_redirects | combine({'expect':'System network setting [net.ipv4.conf.all.accept_redirects = 0]', 'tag':'echo \"net.ipv4.conf.all.accept_redirects = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.default.accept_redirects = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_default_accept_redirects
+- set_fact:
+    network_default_accept_redirects: "{{ network_default_accept_redirects | combine({'expect':'System network setting [net.ipv4.conf.default.accept_redirects = 0]', 'tag':'echo \"net.ipv4.conf.default.accept_redirects = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.all.secure_redirects = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_all_secure_redirects
+- set_fact:
+    network_all_secure_redirects: "{{ network_all_secure_redirects | combine({'expect':'System network setting [net.ipv4.conf.all.secure_redirects = 0]', 'tag':'echo \"net.ipv4.conf.all.secure_redirects = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.tcp_timestamps = 1' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_tcp_timestamps
+- set_fact:
+    network_tcp_timestamps: "{{ network_tcp_timestamps | combine({'expect':'System network setting [net.ipv4.tcp_timestamps = 1]', 'tag':'echo \"net.ipv4.tcp_timestamps = 1\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.icmp_ignore_bogus_error_responses = 1' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_icmp_ignore_bogus_error_responses
+- set_fact:
+    network_icmp_ignore_bogus_error_responses: "{{ network_icmp_ignore_bogus_error_responses | combine({'expect':'System network setting [net.ipv4.icmp_ignore_bogus_error_responses = 1]', 'tag':'echo \"net.ipv4.icmp_ignore_bogus_error_responses = 1\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.default.proxy_arp = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_default_proxy_arp
+- set_fact:
+    network_default_proxy_arp: "{{ network_default_proxy_arp | combine({'expect':'System network setting [net.ipv4.conf.default.proxy_arp = 0]', 'tag':'echo \"net.ipv4.conf.default.proxy_arp = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.all.proxy_arp = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_all_proxy_arp
+- set_fact:
+    network_all_proxy_arp: "{{ network_all_proxy_arp | combine({'expect':'System network setting [net.ipv4.conf.all.proxy_arp = 0]', 'tag':'echo \"net.ipv4.conf.all.proxy_arp = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.tcp_max_syn_backlog = 8192' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_tcp_max_syn_backlog
+- set_fact:
+    network_tcp_max_syn_backlog: "{{ network_tcp_max_syn_backlog | combine({'expect':'System network setting [net.ipv4.tcp_max_syn_backlog = 8192]', 'tag':'echo \"net.ipv4.tcp_max_syn_backlog = 8192\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.tcp_syncookies = 1' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_tcp_syncookies
+- set_fact:
+    network_tcp_syncookies: "{{ network_tcp_syncookies | combine({'expect':'System network setting [net.ipv4.tcp_syncookies = 1]', 'tag':'echo \"net.ipv4.tcp_syncookies = 1\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.tcp_fin_timeout = 60' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_tcp_fin_timeout
+- set_fact:
+    network_tcp_fin_timeout: "{{ network_tcp_fin_timeout | combine({'expect':'System network setting [net.ipv4.tcp_fin_timeout = 60]', 'tag':'echo \"net.ipv4.tcp_fin_timeout = 60\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.ip_forward = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_ip_forward
+- set_fact:
+    network_ip_forward: "{{ network_ip_forward | combine({'expect':'System network setting [net.ipv4.ip_forward = 0]', 'tag':'echo \"net.ipv4.ip_forward = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.conf.all.send_redirects = 0' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_all_send_redirects
+- set_fact:
+    network_all_send_redirects: "{{ network_all_send_redirects | combine({'expect':'System network setting [net.ipv4.conf.all.send_redirects = 0]', 'tag':'echo \"net.ipv4.conf.all.send_redirects = 0\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.tcp_keepalive_time = 150' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_tcp_keepalive_time
+- set_fact:
+    network_tcp_keepalive_time: "{{ network_tcp_keepalive_time | combine({'expect':'System network setting [net.ipv4.tcp_keepalive_time = 150]', 'tag':'echo \"net.ipv4.tcp_keepalive_time = 150\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.tcp_keepalive_probes = 5' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_tcp_keepalive_probes
+- set_fact:
+    network_tcp_keepalive_probes: "{{ network_tcp_keepalive_probes | combine({'expect':'System network setting [net.ipv4.tcp_keepalive_probes = 5]', 'tag':'echo \"net.ipv4.tcp_keepalive_probes = 5\" >>/etc/sysctl.conf'})}}"
+  
+- name: Check system network setting
+  shell: if [ -n "`grep 'net.ipv4.tcp_keepalive_intvl = 6' /etc/sysctl.conf`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: network_tcp_keepalive_intvl
+- set_fact:
+    network_tcp_keepalive_intvl: "{{ network_tcp_keepalive_intvl | combine({'expect':'System network setting [net.ipv4.tcp_keepalive_intvl = 6]', 'tag':'echo \"net.ipv4.tcp_keepalive_intvl = 6\" >>/etc/sysctl.conf'})}}"

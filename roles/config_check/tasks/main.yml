@@ -1,0 +1,122 @@
+---
+
+#- name: Check os system type
+#  debug: msg='Check os is Centos7 system.'
+#  failed_when: ansible_distribution != "Centos" and ansible_distribution_major_version != '7'
+
+- name: Check OS Time Zone [CST]
+  shell: if [ -n "`date |grep CST`" ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: time_zone
+- set_fact:
+    time_zone: "{{ time_zone | combine({'expect':'OS Time Zone is CST', 'tag':'cat /usr/share/zoneinfo/Asia/Shanghai >/etc/localtime'})}}"
+
+- name: Check [Control+Alt+Delete] Reboot config
+  shell: if [ -L "/etc/systemd/system/ctrl-alt-del.target" ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: Control_Alt_Delete
+- set_fact:
+    Control_Alt_Delete: "{{ Control_Alt_Delete | combine({'expect':'OS Control+Alt+Delete no reboot', 'tag':'systemctl mask ctrl-alt-del.target'})}}"
+
+- name: Check OS language environment [en_US.UTF-8]
+  shell: if [ -n "`grep 'en_US.UTF-8' /etc/locale.conf`" ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: lang_env
+- set_fact:
+    lang_env: "{{ lang_env | combine({'expect':'OS language environment is en_US.UTF-8', 'tag':'echo \"LANG=\"en_US.UTF-8\"\" >/etc/locale.conf'})}}"
+
+- name: Check file /etc/bashrc [HISTTIMEFORMAT] History command timestamp config
+  configCheck: filepath="/etc/bashrc" configuration="export  HISTTIMEFORMAT" value='"%F %T "' rule="="
+  register: record_time_stamp
+
+- name: Check file /etc/profile [TMOUT] Automatically log out
+  configCheck: filepath="/etc/profile" configuration="export TMOUT" value="300" rule="="
+  register: login_TMOUT
+
+- name: Check file /etc/profile [HISTFILESIZE] History lists
+  configCheck: filepath="/etc/profile" configuration="export HISTFILESIZE" value="5000" rule="="
+  register: history_HISTFILESIZE
+
+- name: Check file /etc/bashrc  [HISTTIMEFORMAT] History command timestamp config
+  shell: if [ -n "`grep 'HISTTIMEFORMAT=\"%F %T \"' /etc/bashrc`" ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: history_record_time_stamp
+- set_fact:
+    history_record_time_stamp: "{{ history_record_time_stamp | combine({'expect':'File config HISTTIMEFORMAT [%F %T ]', 'tag':'echo HISTTIMEFORMAT=\"%F %T \" >>/etc/bashrc'})}}"
+
+- name: Check OS default startup level [multi-user.target]
+  shell: if [ -n "`systemctl get-default|grep multi-user.target`" ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: multi_user_target
+- set_fact:
+    multi_user_target: "{{ multi_user_target | combine({'expect':'OS default startup level [multi-user.target]', 'tag':'systemctl set-default multi-user.target'})}}"
+
+#- name: Check password strategy [History Check] config
+#  shell: if [ -n "`grep -w 'remember=3' /etc/pam.d/passwd`" ];then echo "Passed";else echo "Failure";fi
+#  changed_when: False
+#  register: password_history_check
+#- set_fact:
+#    password_history_check: "{{ password_history_check | combine({'expect':'File /etc/pam.d/passwd settting [password required pam_unix.so remember=3 use_authtok md5 shadow]', 'tag':'echo \"password required pam_unix.so remember=3 use_authtok md5 shadow\" >> /etc/pam.d/passwd'})}}"
+
+- name: Check login [password] config
+  shell: if [ -n "`grep -w '^password.*requisite.*pam_pwquality.so.*retry=5.*minlen=8.*dcredit=-1.*lcredit=-1.*' /etc/pam.d/system-auth-ac`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: login_passwd
+- set_fact:
+    login_passwd: "{{ login_passwd | combine({'expect':'File /etc/pam.d/system-auth-ac settting', 'tag':'sed -i \"s/password    requisite     pam_pwquality.so.*/password    requisite     pam_pwquality.so try_first_pass local_users_only retry=5 minlen=8 dcredit=-1 lcredit=-1 enforce_for_root authtok_type=/g\"  /etc/pam.d/system-auth-ac'})}}"
+
+- name: Check login [LASTLOG_ENAB] config
+  configCheck: filepath="/etc/login.defs" configuration="LASTLOG_ENAB" value="yes" rule=" "
+  register: login_LASTLOG_ENAB
+
+- name: Check login [PASS_MIN_LEN] config
+  configCheck: filepath="/etc/login.defs" configuration="PASS_MIN_LEN" value="8" rule=" "
+  register: login_PASS_MIN_LEN
+
+- name: Check password  [LOGIN_RETRIES] config
+  configCheck: filepath="/etc/login.defs" configuration="LOGIN_RETRIES" value="5" rule=" "
+  register: login_LOGIN_RETRIES
+
+- name: Check password  [LOG_UNKFAIL_ENAB] config
+  configCheck: filepath="/etc/login.defs" configuration="LOG_UNKFAIL_ENAB" value="yes" rule=" "
+  register: login_LOG_UNKFAIL_ENAB
+
+- name: Check Empty Password
+  shell: if [ -z "`awk -F':' '$2 ~ /\!/{print $1}' /etc/shadow`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: systemUser_Empty_Password
+- set_fact:
+    systemUser_Empty_Password: "{{ systemUser_Empty_Password | combine({'expect':'Not user empty password', 'tag':'Setting user password'})}}"
+
+- name: Check UID is 0 User
+  shell:  if [ "`awk -F':' '($3 == 0) { print $1 }' /etc/passwd`" = "root" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: systemUser_UID_0
+- set_fact:
+    systemUser_UID_0: "{{ systemUser_UID_0 | combine({'expect':'User UID=0 Only one root', 'tag':'Setting user UID=0 Only one root'})}}"
+
+- name: Check UID < 1000 system user nologin Not including root
+  shell: if [ -z "`awk -F':' '$3<1000 && $7!=\"/sbin/nologin\" && $1!=\"root\" {print $1}' /etc/passwd`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: systemUser_system_user_nologin
+- set_fact:
+    systemUser_system_user_nologin: "{{ systemUser_system_user_nologin | combine({'expect':'System user UID<1000 nologin,Not included root', 'tag':'awk -F\":\" \"$3<1000 && $7!=\\\"/sbin/nologin\\\" && $1!=\"root\" {print $1}\" /etc/passwd| xargs -i usermod -s /sbin/nologin {}'})}}"
+
+- name: Check the root user environment variable directory mode 777
+  shell:  if [ -n "`find `echo $PATH | tr ':' ' '` -type d \( -perm -002 -o -perm -020 \) -ls`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: root_env_dir
+- set_fact:
+    root_env_dir: "{{ root_env_dir | combine({'expect':'root user environment variable directory not mode 777', 'tag':'chmod -r $PATH'})}}"
+
+- include: chrony.yml
+
+- include: kernel.yml
+
+- include: network.yml
+
+- include: sshd.yml
+
+- include: audit.yml
+
+- include: fileMode.yml

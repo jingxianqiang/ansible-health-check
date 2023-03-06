@@ -1,0 +1,31 @@
+---
+
+- name: Check Chrony(NTP) server [192.168.0.253] config
+  shell: if [ -n "`grep -n '^server 192.168.0.253 iburst' /etc/chrony.conf`" ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: ntp_server
+- set_fact:
+    ntp_server: "{{ ntp_server | combine({'expect':'Ntp server 192.168.0.253', 'tag':'sed -i \"N;2aserver 192.168.0.253 iburst\" /etc/chrony.conf'})}}"
+
+- debug: msg={{ ntp_server }}
+
+- name: Check Chrony(NTP) maxchange config
+  shell: if [ -n "`grep '^maxchange 500 0 -1' /etc/chrony.conf`" ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: ntp_maxchange
+- set_fact:
+    ntp_maxchange: "{{ ntp_maxchange | combine({'expect':'Ntp config maxchange 500 0 -1', 'tag':'echo \"maxchange 500 0 -1\" /etc/chrony.conf'})}}"
+
+- name: Check Chrony(NTP) maxslewrate config
+  shell: if [ -n "`grep '^maxslewrate 500' /etc/chrony.conf`" ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: ntp_maxslewrate
+- set_fact:
+    ntp_maxslewrate: "{{ ntp_maxslewrate | combine({'expect':'Ntp config maxslewrate 500', 'tag':'echo \"maxslewrate 500\" /etc/chrony.conf'})}}"
+
+- name: Check Chrony(NTP) makestep config
+  shell: if [ -z "`grep '^makestep' /etc/chrony.conf`" ];then echo 'Passed';else echo 'Failure';fi
+  changed_when: False
+  register: ntp_makestep
+- set_fact:
+    ntp_makestep: "{{ ntp_makestep | combine({'expect':'Ntp config #makestep', 'tag':'sed -i \"s/^makestep.*/#&/g\" /etc/chrony.conf'})}}"

@@ -1,0 +1,127 @@
+---
+
+- name: check [iptables] service 
+  shell:  if  [ -n "`systemctl status iptables |grep  'Active:'|grep 'running'`" ];then echo "Failure";else echo "Passed";fi
+  changed_when: False
+  register: serviceStatus_iptables
+- set_fact:
+    serviceStatus_iptables: "{{ serviceStatus_iptables | combine({'expect':'Service iptables status stop or Not Installed', 'tag':'systemctl stop/disable iptables | chkconfig iptables off'})}}"
+
+- name: check [firewalld] service 
+  shell:  if  [ -n "`systemctl status firewalld |grep  'Active:'|grep 'running'`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: serviceStatus_firewalld
+- set_fact:
+    serviceStatus_firewalld: "{{ serviceStatus_firewalld | combine({'expect':'Service firewalld status stop or Not Installed', 'tag':'systemctl stop/disable firewalld | chkconfig firewalld off'})}}"
+
+- name: check [cups] service
+  shell:  if  [ -n "`systemctl status cups |grep  'Active:'|grep 'running'`" ];then echo "Failure";else echo "Passed";fi
+  changed_when: False
+  register: serviceStatus_cups
+- set_fact:
+    serviceStatus_cups: "{{ serviceStatus_cups | combine({'expect':'Service cups status stop or Not Installed', 'tag':'systemctl stop/disable cups | chkconfig cups
+ off'})}}"
+
+- name: check [postfix] service
+  shell:  if  [ -n "`systemctl status postfix |grep  'Active:'|grep 'running'`" ];then echo "Failure";else echo "Passed";fi
+  changed_when: False
+  register: serviceStatus_postfix
+- set_fact:
+    serviceStatus_postfix: "{{ serviceStatus_postfix | combine({'expect':'Service postfix status stop or Not Installed', 'tag':'systemctl stop/disable postfix | chkconfig postfix
+ off'})}}"
+
+- name: check [pcscd] service
+  shell:  if  [ -n "`systemctl status pcscd |grep  'Active:'|grep 'running'`" ];then echo "Failure";else echo "Passed";fi
+  changed_when: False
+  register: serviceStatus_pcscd
+- set_fact:
+    serviceStatus_pcscd: "{{ serviceStatus_pcscd | combine({'expect':'Service pcscd status stop or Not Installed', 'tag':'systemctl stop/disable pcscd | chkconfig pcscd
+ off'})}}"
+
+- name: check [smartd] service
+  shell:  if  [ -n "`systemctl status smartd |grep  'Active:'|grep 'running'`" ];then echo "Failure";else echo "Passed";fi
+  changed_when: False
+  register: serviceStatus_smartd
+- set_fact:
+    serviceStatus_smartd: "{{ serviceStatus_smartd | combine({'expect':'Service smartd status stop or Not Installed', 'tag':'systemctl stop/disable smartd | chkconfig smartd
+ off'})}}"
+
+- name: check [alsasound] service
+  shell:  if  [ -n "`systemctl status alsasound |grep  'Active:'|grep 'running'`" ];then echo "Failure";else echo "Passed";fi
+  changed_when: False
+  register: serviceStatus_alsasound
+- set_fact:
+    serviceStatus_alsasound: "{{ serviceStatus_alsasound | combine({'expect':'Service alsasound status stop or Not Installed', 'tag':'systemctl stop/disable alsasound | chkconfig alsasound
+ off'})}}"
+
+- name: check [acpid] service
+  shell:  if  [ -n "`systemctl status acpid |grep  'Active:'|grep 'running'`" ];then echo "Failure";else echo "Passed";fi
+  changed_when: False
+  register: serviceStatus_acpid
+- set_fact:
+    serviceStatus_acpid: "{{ serviceStatus_acpid | combine({'expect':'Service acpid status stop or Not Installed', 'tag':'systemctl stop/disable acpid | chkconfig acpid
+ off'})}}"
+
+- name: check [iscsitarget] service
+  shell:  if  [ -n "`systemctl status iscsitarget |grep  'Active:'|grep 'running'`" ];then echo "Failure";else echo "Passed";fi
+  changed_when: False
+  register: serviceStatus_iscsitarget
+- set_fact:
+    serviceStatus_iscsitarget: "{{ serviceStatus_iscsitarget | combine({'expect':'Service iscsitarget status stop or Not Installed', 'tag':'systemctl stop/disable iscsitarget | chkconfig iscsitarget
+ off'})}}"
+
+- name: check [smb] service
+  shell:  if  [ -n "`systemctl status smb |grep  'Active:'|grep 'running'`" ];then echo "Failure";else echo "Passed";fi
+  changed_when: False
+  register: serviceStatus_smb
+- set_fact:
+    serviceStatus_smb: "{{ serviceStatus_smb | combine({'expect':'Service smb status stop or Not Installed', 'tag':'systemctl stop/disable smb | chkconfig smb
+ off'})}}"
+
+- name: check [ip6tables] service
+  shell:  if  [ -n "`systemctl status ip6tables |grep  'Active:'|grep 'running'`" ];then echo "Failure";else echo "Passed";fi
+  changed_when: False
+  register: serviceStatus_ip6tables
+- set_fact:
+    serviceStatus_ip6tables: "{{ serviceStatus_ip6tables | combine({'expect':'Service ip6tables status stop or Not Installed', 'tag':'systemctl stop/disable ip6tables | chkconfig ip6tables
+ off'})}}"
+
+- name: check [vsftpd] service
+  shell:  if  [ -n "`systemctl status vsftpd |grep  'Active:'|grep 'running'`" ];then echo "Failure";else echo "Passed";fi
+  changed_when: False
+  register: serviceStatus_vsftpd
+- set_fact:
+    serviceStatus_vsftpd: "{{ serviceStatus_vsftpd | combine({'expect':'Service vsftpd status stop or Not Installed', 'tag':'systemctl stop/disable vsftpd | chkconfig vsftpd
+ off'})}}"
+
+- name: check [auditd] service
+  shell:  if  [ -n "`systemctl status auditd |grep  'Active:'|grep 'running'`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: serviceStatus_auditd
+- set_fact:
+    serviceStatus_auditd: "{{ serviceStatus_auditd | combine({'expect':'Service auditd status in start', 'tag':'systemctl start/enable auditd | chkconfig auditd
+ off'})}}"
+
+- name: check [sshd] service
+  shell:  if  [ -n "`systemctl status sshd |grep  'Active:'|grep 'running'`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: serviceStatus_sshd
+- set_fact:
+    serviceStatus_sshd: "{{ serviceStatus_sshd | combine({'expect':'Service sshd status in start', 'tag':'systemctl start/enable sshd | chkconfig sshd
+ off'})}}"
+
+- name: check [chronyd] service
+  shell:  if  [ -n "`systemctl status chronyd |grep  'Active:'|grep 'running'`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: serviceStatus_chronyd
+- set_fact:
+    serviceStatus_chronyd: "{{ serviceStatus_chronyd | combine({'expect':'Service chronyd status in start', 'tag':'systemctl start/enable chronyd | chkconfig chronyd
+ off'})}}"
+
+- name: check [kdump] service
+  shell:  if  [ -n "`systemctl status kdump |grep  'Active:'|grep 'exited'`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: serviceStatus_kdump
+- set_fact:
+    serviceStatus_kdump: "{{ serviceStatus_kdump | combine({'expect':'Service kdump status in start', 'tag':'systemctl start/enable kdump | chkconfig kdump
+ off'})}}"

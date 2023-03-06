@@ -1,0 +1,33 @@
+---
+
+- name: Check kernel [kernel.sysrq] config
+  configCheck: filepath="/etc/sysctl.conf" configuration="kernel.sysrq" value="1" rule="="
+  register: kernel_sysrq
+
+- name: Check kernel [vm.min_free_kbytes] config
+  configCheck: filepath="/etc/sysctl.conf" configuration="vm.min_free_kbytes" value="16384" rule="="
+  register: kernel_vm_min
+
+- name: Check kernel [vm.vfs_cache_pressure] config
+  configCheck: filepath="/etc/sysctl.conf" configuration="vm.vfs_cache_pressure" value="100" rule="="
+  register: kernel_vm_vfs
+
+- name: Check kernel [vm.dirty_ratio] config
+  configCheck: filepath="/etc/sysctl.conf" configuration="vm.dirty_ratio" value="40" rule="="
+  register: kernel_vm_dirty
+
+- name: Check kernel [vm.page-cluster] config
+  configCheck: filepath="/etc/sysctl.conf" configuration="vm.page-cluster" value="3" rule="="
+  register: kernel_vm_page
+
+- name: Check kernel [fs.file-max] config
+  configCheck: filepath="/etc/sysctl.conf" configuration="fs.file-max" value="838860" rule="="
+  register: kernel_fs
+
+- name: Check kernel [kernel.shmmni] config
+  configCheck: filepath="/etc/sysctl.conf" configuration="kernel.shmmni" value="4096" rule="="
+  register: kernel_shmmni
+
+- name: Check kernel [kernel.core_pattern] config
+  configCheck: filepath="/etc/sysctl.conf" configuration="kernel.core_pattern" value="\"/corefile/core-%e\"" rule="="
+  register: kernel_shmmni

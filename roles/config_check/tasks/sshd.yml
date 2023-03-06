@@ -1,0 +1,85 @@
+---
+
+- name: Check ssh config [Port] config
+  shell: if [ -n "`grep -w '^Port 22' /etc/ssh/sshd_config`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: ssh_Port
+- set_fact:
+    ssh_Port: "{{ ssh_Port | combine({'expect':'ssh config [Port 22]', 'tag':'sed -i \"s/\\#Port 22/Port 22/\" /etc/ssh/sshd_config'})}}"
+
+- name: Check ssh config [LogLevel] config
+  shell: if [ -n "`grep -w '^LogLevel INFO' /etc/ssh/sshd_config`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: ssh_LogLevel
+- set_fact:
+    ssh_LogLevel: "{{ ssh_LogLevel | combine({'expect':'ssh config [LogLevel INFO]', 'tag':'sed -i \"s/\\#LogLevel INFO/LogLevel INFO/\" /etc/ssh/sshd_config'})}}"
+
+- name: Check ssh config [MaxAuthTries ] config
+  shell: if [ -n "`grep -w '^MaxAuthTries 3' /etc/ssh/sshd_config`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: ssh_MaxAuthTries
+- set_fact:
+    ssh_MaxAuthTries: "{{ ssh_MaxAuthTries | combine({'expect':'ssh config [MaxAuthTries 3]', 'tag':'sed -i \"s/\\#MaxAuthTries.*/MaxAuthTries 3/\" /etc/ssh/sshd_config'})}}"
+
+- name: Check ssh config [PasswordAuthentication] config
+  shell: if [ -n "`grep -w '^PasswordAuthentication yes' /etc/ssh/sshd_config`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: ssh_PasswordAuthentication
+- set_fact:
+    ssh_PasswordAuthentication: "{{ ssh_PasswordAuthentication | combine({'expect':'ssh config [PasswordAuthentication yes]', 'tag':'sed -i \"s/\\#PasswordAuthentication yes/PasswordAuthentication yes/\" /etc/ssh/sshd_config'})}}"
+
+- name: Check ssh config [RhostsRSAAuthentication] config
+  shell: if [ -n "`grep -w '^RhostsRSAAuthentication no' /etc/ssh/sshd_config`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: ssh_RhostsRSAAuthentication
+- set_fact:
+    ssh_RhostsRSAAuthentication: "{{ ssh_RhostsRSAAuthentication | combine({'expect':'ssh config [RhostsRSAAuthentication no]', 'tag':'echo \"RhostsRSAAuthentication no\" >> /etc/ssh/sshd_config'})}}"
+
+- name: Check ssh config [PermitEmptyPasswords] config
+  shell: if [ -n "`grep -w '^PermitEmptyPasswords no' /etc/ssh/sshd_config`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: ssh_PermitEmptyPasswords
+- set_fact:
+    ssh_PermitEmptyPasswords: "{{ ssh_PermitEmptyPasswords | combine({'expect':'ssh config [PermitEmptyPasswords no]', 'tag':'sed -i \"s/\\#PermitEmptyPasswords no/PermitEmptyPasswords no/\" /etc/ssh/sshd_config'})}}"
+
+- name: Check ssh config [StrictModes] config
+  shell: if [ -n "`grep -w '^StrictModes yes' /etc/ssh/sshd_config`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: ssh_StrictModes
+- set_fact:
+    ssh_StrictModes: "{{ ssh_StrictModes | combine({'expect':'ssh config [StrictModes yes]', 'tag':'sed -i \"s/\\#StrictModes yes/StrictModes yes/\" /etc/ssh/sshd_config'})}}"
+
+- name: Check ssh config [Protocol] config
+  shell: if [ -n "`grep -w '^Protocol 2' /etc/ssh/sshd_config`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: ssh_Protocol
+- set_fact:
+    ssh_Protocol: "{{ ssh_Protocol | combine({'expect':'ssh config [Protocol 2]', 'tag':'echo Protocol 2 >> /etc/ssh/sshd_config'})}}"
+
+- name: Check ssh config [PermitRootLogin] config
+  shell: if [ -n "`grep -w '^PermitRootLogin no' /etc/ssh/sshd_config`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: ssh_PermitRootLogin
+- set_fact:
+    ssh_PermitRootLogin: "{{ ssh_PermitRootLogin | combine({'expect':'ssh config [PermitRootLogin no]', 'tag':'sed -i \"s/\\#PermitRootLogin yes/PermitRootLogin no/\" /etc/ssh/sshd_config'})}}"
+
+- name: Check ssh config [IgnoreUserKnownHosts] config
+  shell: if [ -n "`grep -w '^IgnoreUserKnownHosts yes' /etc/ssh/sshd_config`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: ssh_IgnoreUserKnownHosts
+- set_fact:
+    ssh_IgnoreUserKnownHosts: "{{ ssh_IgnoreUserKnownHosts | combine({'expect':'ssh config [IgnoreUserKnownHosts no]', 'tag':'/bin/sed -i \"s/\\#IgnoreUserKnownHosts no/IgnoreUserKnownHosts yes/\" /etc/ssh/sshd_config'})}}"
+
+- name: Check ssh config [Ciphers aes256-cbc,3des-cbc,aes192-ctr] config
+  shell: if [ -n "`grep -w '^Ciphers.*aes256-cbc.*3des-cbc.*aes192-ctr' /etc/ssh/sshd_config`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: ssh_Ciphers
+- set_fact:
+    ssh_Ciphers: "{{ ssh_Ciphers | combine({'expect':'ssh config [Ciphers aes256-cbc,3des-cbc,aes192-ctr]', 'tag':'echo Ciphers aes256-cbc,3des-cbc,aes192-ctr >> /etc/ssh/sshd_config'})}}"
+
+- name: Check ssh config [MACs hmac-sha1,hmac-md5] config
+  shell: if [ -n "`grep -w '^MACs hmac-sha1,hmac-md5' /etc/ssh/sshd_config`" ];then echo "Passed";else echo "Failure";fi
+  changed_when: False
+  register: ssh_MACs
+- set_fact:
+    ssh_MACs: "{{ ssh_MACs | combine({'expect':'ssh config [MACs hmac-sha1,hmac-md5]', 'tag':'echo MACs hmac-sha1,hmac-md5 >> /etc/ssh/sshd_config'})}}"
