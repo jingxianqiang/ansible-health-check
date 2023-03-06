@@ -1,8 +1,7 @@
 ---
 - name: Audit Check for hosts.
   hosts: all
-  remote_user: root
-  gather_facts: True
+  gather_facts: False
   roles:
     - config_check
     - service_check
