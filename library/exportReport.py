@@ -4,7 +4,6 @@
 import json
 import os
 import shutil
-import commands
 import xlwt
 import codecs
 
